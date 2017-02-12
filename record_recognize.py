@@ -8,8 +8,11 @@ import matplotlib.pyplot as plt
 
 pygame.init()
 
+RED=(255,0,0)
+BLACK=(0,0,0)
+
 #width and height of screen
-size=(300, 300)
+size=(400, 400)
 screen= pygame.display.set_mode(size)
 
 pygame.display.set_caption("VOICE")
@@ -27,6 +30,13 @@ frames = []
 p = pyaudio.PyAudio()
 
 stream = 0
+
+def draw_circle(radius):
+	pygame.draw.circle(screen, RED, [200, 200], radius)
+
+def clear_screen():
+	screen.fill(BLACK)
+	pygame.display.flip()
 
 def start_recording():
 	data = stream.read(CHUNK)
@@ -101,15 +111,20 @@ while not done:
 
 		    if event.key == pygame.K_r:
 		    	stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
+		    	draw_circle(50)
 		    
 
 		elif event.type == pygame.KEYUP:
 		    if event.key == pygame.K_r:
+		    	clear_screen()
 		    	record_sound()
 		    	stream.stop_stream()
 		    	stream.close()
 		    	recognize()
 		    	# process()
+
+
+		pygame.display.flip()
 
 
 
