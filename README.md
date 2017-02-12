@@ -1,3 +1,3 @@
 # Text_to_speech
 
-Testing out various python libraries and speech engines for text to speech capabilities.
+Various audio processing test modules for synthesis and recognition.
