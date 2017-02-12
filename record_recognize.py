@@ -62,10 +62,14 @@ def process():
 
 	signal = wf.readframes(-1)
 	signal = np.fromstring(signal, 'Int16')
+	fs = wf.getframerate()
+
+	time = np.linspace(0, len(signal)/fs, num = len(signal))
 	
 	plt.figure(1)
 	plt.title('Signal wave')
-	plt.plot(signal)
+	# plt.plot(signal)
+	plt.plot(time, signal)
 	plt.show()
 
 	print max(signal)
@@ -104,7 +108,8 @@ while not done:
 		    	record_sound()
 		    	stream.stop_stream()
 		    	stream.close()
-		    	process()
+		    	recognize()
+		    	# process()
 
 
 
