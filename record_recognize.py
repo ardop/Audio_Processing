@@ -18,6 +18,7 @@ screen= pygame.display.set_mode(size)
 pygame.display.set_caption("VOICE")
 clock=pygame.time.Clock() 
 
+#Sound recording information
 CHUNK = 1024
 FORMAT = pyaudio.paInt16 #paInt8
 CHANNELS = 1 
@@ -31,6 +32,8 @@ p = pyaudio.PyAudio()
 
 stream = 0
 
+
+# Pygame UI funcitons ---------------------------------------------
 def draw_circle(radius):
 	pygame.draw.circle(screen, RED, [200, 200], radius)
 
@@ -38,12 +41,17 @@ def clear_screen():
 	screen.fill(BLACK)
 	pygame.display.flip()
 
+#Recording functions ----------------------------------------------
+
 def start_recording():
+	#Append to the stream
 	data = stream.read(CHUNK)
 	frames.append(data) 
 
 
 def record_sound():
+
+	#Save the stream and clear frames to prepare for the next recording
 
 	global frames
 	wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
@@ -68,6 +76,8 @@ def recognize():
 
 def process():
 
+	#Plotting the wav file
+
 	wf = wave.open(WAVE_OUTPUT_FILENAME, 'r')
 
 	signal = wf.readframes(-1)
@@ -82,9 +92,6 @@ def process():
 	plt.plot(time, signal)
 	plt.show()
 
-	print max(signal)
-	print min(signal)
-
 
 done = False
 
@@ -92,6 +99,7 @@ while not done:
 
 	keys = pygame.key.get_pressed()
 	if keys[pygame.K_r]:
+		#Keep recording as long as the button is held down
 		start_recording()
 
 	for event in pygame.event.get():
@@ -110,7 +118,9 @@ while not done:
 		    	stream.close()
 
 		    if event.key == pygame.K_r:
+		    	#Start the stream when the button is first pressed
 		    	stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
+		    	#Visual indicator while recording
 		    	draw_circle(50)
 		    
 
@@ -123,7 +133,7 @@ while not done:
 		    	recognize()
 		    	# process()
 
-
+		#Updating display
 		pygame.display.flip()
 
 
