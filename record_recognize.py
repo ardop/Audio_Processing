@@ -70,9 +70,13 @@ def recognize():
 	    audio = r.record(source)                        # extract audio data from the file
 
 	try:
-	    print("Transcription: " + r.recognize(audio))   # recognize speech using Google Speech Recognition
-	except LookupError:                                 # speech is unintelligible
-	    print("Could not understand audio")
+	    print("Transcription: " + r.recognize_google(audio))   # recognize speech using Google Speech Recognition
+	# except LookupError:                                 # speech is unintelligible
+	#     print("Could not understand audio")
+	except sr.UnknownValueError:
+	    print("Google Speech Recognition could not understand audio")
+	except sr.RequestError as e:
+		print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
 def process():
 
